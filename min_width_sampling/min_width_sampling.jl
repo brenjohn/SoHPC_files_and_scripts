@@ -125,10 +125,23 @@ function min_width_sampling(g::AbstractGraph, N_samples::Int)
     best_order, best_tw
 end
 
+function min_width_mt_sampling(g::AbstractGraph, samples_per_thread::Int)
+    orders = Array{Array{Int, 1}, 1}(undef, Threads.nthreads())
+    tws = Array{Int, 1}(undef, Threads.nthreads())
+
+    Threads.@threads for _ = 1:Threads.nthreads()
+        orders[Threads.threadid()], tws[Threads.threadid()] = min_width_sampling(g, samples_per_thread)
+    end
+
+    best = argmin(tws)
+    orders[best], tws[best]
+end
+
 ###
 ### Example
 ###
 
 g = graph_from_gr("sycamore_53_8_0.gr")
 order, tw = min_width(g)
-order, tw = min_width_sampling(g, 10)
+order, tw = min_width_sampling(g, 100)
+order, tw = min_width_mt_sampling(g, 25)
