@@ -138,6 +138,40 @@ function min_width_mt_sampling(g::AbstractGraph, samples_per_thread::Int)
 end
 
 ###
+### Functions for checking the treewidth of an elimination order
+###
+
+"""
+    find_treewidth_from_order(G::AbstractGraph, order::Array{Symbol, 1})
+
+Return the treewidth of `G` with respect to the elimination order in `order`.
+"""
+function find_treewidth_from_order(G::AbstractGraph, order::Array{Int, 1})
+    G = deepcopy(G)
+    labels = collect(1:nv(G))
+    τ = 0
+    for v_label in order
+        v = findfirst(vl -> vl == v_label, labels)
+        τ = max(τ, degree(G, v))
+        eliminate!(G, labels, v)
+    end
+    τ
+end
+
+"""Eliminate vertex v from G and update the labels array accordingly"""
+function eliminate!(G, labels, v)
+    N = all_neighbors(G, v)
+    for i = 1:length(N)-1
+        for j = i+1:length(N)
+            add_edge!(G, i, j)
+        end
+    end
+
+    labels[v] = labels[end]
+    rem_vertex!(G, v)
+end
+
+###
 ### Example
 ###
 
@@ -145,3 +179,5 @@ g = graph_from_gr("sycamore_53_8_0.gr")
 order, tw = min_width(g)
 order, tw = min_width_sampling(g, 100)
 order, tw = min_width_mt_sampling(g, 25)
+
+println(tw == find_treewidth_from_order(g, order))
