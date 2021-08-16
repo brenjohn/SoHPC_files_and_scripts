@@ -13,7 +13,7 @@ You can use the code from the script `plot_graph_from_gr_file.jl` to read the `.
 
 ## Installing julia on Kay
 
-Download julia 1.6.2 and extract from the tar file
+From your home directory, download julia 1.6.2 and extract from the tar file
 
 ```
 wget https://julialang-s3.julialang.org/bin/linux/x64/1.6/julia-1.6.2-linux-x86_64.tar.gz
