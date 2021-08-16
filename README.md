@@ -10,3 +10,17 @@ Each graph comes from a different circuit. The graphs named `bristlecone` and `s
 The first line in the `.gr` files contain the number of vertices and edges in the graph. Each subsequent line has two integers (source and destination vertices) describing an edge of the graph
 
 You can use the code from the script `plot_graph_from_gr_file.jl` to read the `.gr` files and create a graph.
+
+## Installing julia on Kay
+
+Download julia 1.6.2 and extract from the tar file
+
+```
+wget https://julialang-s3.julialang.org/bin/linux/x64/1.6/julia-1.6.2-linux-x86_64.tar.gz
+tar -xf julia-1.6.2-linux-x86_64.tar.gz
+```
+
+Then create a symbolic link to the extracted binary
+```
+ln -s ./julia-1.6.2/bin/julia .local/bin/julia
+```
