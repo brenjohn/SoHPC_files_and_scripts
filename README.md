@@ -24,3 +24,8 @@ Then create a symbolic link to the extracted binary
 ```
 ln -s ./julia-1.6.2/bin/julia .local/bin/julia
 ```
+
+Run interactive job on kay
+```
+srun -p DevQ -N 1 -A iccom013c -t 0:20:00 --pty bash
+```
