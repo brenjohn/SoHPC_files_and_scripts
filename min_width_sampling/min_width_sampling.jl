@@ -106,8 +106,8 @@ end
 
 Use the min width heuristic `N_samples` times and return the best result.
 """
-function min_width_sampling(g::AbstractGraph, N_samples::Int)
-    rng = MersenneTwister()
+function min_width_sampling(g::AbstractGraph, N_samples::Int, seed::Int=42)
+    rng = MersenneTwister(seed)
 
     best_order = Array{Int, 1}(undef, nv(g))
     best_tw = nv(g)
@@ -125,12 +125,12 @@ function min_width_sampling(g::AbstractGraph, N_samples::Int)
     best_order, best_tw
 end
 
-function min_width_mt_sampling(g::AbstractGraph, samples_per_thread::Int)
+function min_width_mt_sampling(g::AbstractGraph, samples_per_thread::Int, seed::Int)
     orders = Array{Array{Int, 1}, 1}(undef, Threads.nthreads())
     tws = Array{Int, 1}(undef, Threads.nthreads())
 
     Threads.@threads for _ = 1:Threads.nthreads()
-        orders[Threads.threadid()], tws[Threads.threadid()] = min_width_sampling(g, samples_per_thread)
+        orders[Threads.threadid()], tws[Threads.threadid()] = min_width_sampling(g, samples_per_thread, seed+Threads.threadid())
     end
 
     best = argmin(tws)
@@ -175,9 +175,9 @@ end
 ### Example
 ###
 
-g = graph_from_gr("sycamore_53_8_0.gr")
-order, tw = min_width(g)
-order, tw = min_width_sampling(g, 100)
-order, tw = min_width_mt_sampling(g, 25)
+# g = graph_from_gr("sycamore_53_8_0.gr")
+# order, tw = min_width(g)
+# order, tw = @time min_width_sampling(g, 100)
+# order, tw = @time min_width_mt_sampling(g, 25)
 
-println(tw == find_treewidth_from_order(g, order))
+# println(tw == find_treewidth_from_order(g, order))
