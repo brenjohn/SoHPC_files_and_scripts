@@ -11,13 +11,12 @@ root = 0
 print("rank $my_rank has $(Threads.nthreads()) threads \n")
 
 
-
 #=
     Each rank should load in graph and use min width to find an 
     elimination order.
 =#
 
-g = graph_from_gr("sycamore_53_8_0.gr")
+g = graph_from_gr(joinpath(@__DIR__, "sycamore_53_8_0.gr"))
 order, tw = min_width_mt_sampling(g, 100, 42 + my_rank*Threads.nthreads())
 
 

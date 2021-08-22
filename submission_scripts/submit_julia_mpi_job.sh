@@ -9,7 +9,7 @@ module load openmpi/intel/3.1.2
 
 Start_time=$(date +%s)
 
-mpiexec -n 2 julia --project=. --threads 10 ../min_width_sampling/MPI_example.jl >> tmp.out
+mpiexec -n 2 julia --threads 4 ../min_width_sampling/MPI_example.jl >> tmp.out
 
 End_time=$(date +%s)
 
