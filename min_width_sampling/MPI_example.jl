@@ -18,7 +18,7 @@ print("rank $my_rank has $(Threads.nthreads()) threads \n")
 =#
 
 g = graph_from_gr("sycamore_53_8_0.gr")
-order, tw = min_width_mt_sampling(g, 100, 42+my_rank)
+order, tw = min_width_mt_sampling(g, 100, 42 + my_rank*Threads.nthreads())
 
 
 

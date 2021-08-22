@@ -29,3 +29,25 @@ Run interactive job on kay
 ```
 srun -p DevQ -N 1 -A iccom013c -t 0:20:00 --pty bash
 ```
+
+## Installing MPI.jl on Kay
+
+First load a module with mpi.
+```
+module load openmpi/intel/3.1.2
+```
+
+Then start julia and add the following environment variable. This will tell MPI.jl to use the system mpi and not install its own.
+```
+ENV["JULIA_MPI_BINARY"]="system"
+```
+
+Then in the julia package manager add MPI.jl
+```
+]add MPI
+```
+
+You can build the package with
+```
+]build MPI
+```
